@@ -1,12 +1,29 @@
-import React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const SalvosScreen = () => {
+import HomeScreen from './HomeScreen';
+import DetalhesScreen from './DetalhesScreen';
+import SalvosScreen from './SalvosScreen';
+
+const Stack = createStackNavigator();
+
+const App = () => {
+  const [savedMovies, setSavedMovies] = useState([]);
+
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Filmes Salvos</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home">
+          {(props) => <HomeScreen {...props} saveMovie={setSavedMovies} />}
+        </Stack.Screen>
+        <Stack.Screen name="Detalhes" component={DetalhesScreen} />
+        <Stack.Screen name="Salvos">
+          {(props) => <SalvosScreen {...props} route={{ params: { savedMovies } }} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
-export default SalvosScreen;
+export default App;
